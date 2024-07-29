@@ -1,13 +1,19 @@
 class Solution:
-  def subarraysDivByK(self, nums: List[int], k: int) -> int:
-    ans = 0
-    prefix = 0
-    count = [0] * k
-    count[0] = 1
+    def subarraysDivByK(self, nums: List[int], k: int) -> int:
+            cum_mod = []
+            sum = 0
 
-    for num in nums:
-      prefix = (prefix + num % k + k) % k
-      ans += count[prefix]
-      count[prefix] += 1
+            for x in nums:
+                sum += x
+                cum_mod.append(sum % k)
 
-    return ans
+            mod_dict = Counter(cum_mod)
+            
+            res = 0
+            for i in mod_dict:
+                if i == 0:
+                    res += mod_dict[i]
+                if mod_dict[i] > 1:
+                    res += int(mod_dict[i] * (mod_dict[i] - 1) / 2)
+                
+            return res
